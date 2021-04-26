@@ -350,7 +350,7 @@ BigIntegerCmpInt(c1, c2)
      unsigned int c2;
 {
 #ifdef OPENSSL
-#if OPENSSL_VERSION_NUMBER < 0x10100000L
+#if OPENSSL_VERSION_NUMBER < 0x10100000
   if(c1->top > 1)
     return 1;
   else if(c1->top < 1)
@@ -704,7 +704,7 @@ BigIntegerModExp(r, b, e, m, c, a)
   else if(a == NULL) {
     BN_mod_exp(r, b, e, m, c);
   }
-#if OPENSSL_VERSION_NUMBER >= 0x00906000
+#if OPENSSL_VERSION_NUMBER >= 0x00906000 && OPENSSL_VERSION_NUMBER < 0x10100000
   else if(b->top == 1) {  /* 0.9.6 and above has mont_word optimization */
     BN_ULONG B = b->d[0];
     BN_mod_exp_mont_word(r, B, e, m, c, a);
