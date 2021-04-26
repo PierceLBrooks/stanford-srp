@@ -350,6 +350,7 @@ BigIntegerCmpInt(c1, c2)
      unsigned int c2;
 {
 #ifdef OPENSSL
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
   if(c1->top > 1)
     return 1;
   else if(c1->top < 1)
@@ -362,6 +363,12 @@ BigIntegerCmpInt(c1, c2)
     else
       return 0;
   }
+#else
+  BigInteger t = BigIntegerFromInt(c2);
+  int rv = BigIntegerCmp(c1, t);
+  BigIntegerFree(t);
+  return rv;
+#endif
 #elif defined(CRYPTOLIB)
   BigInteger t;
   int rv;
